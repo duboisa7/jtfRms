@@ -5,6 +5,7 @@
 
 [![lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 [![R-CMD-check](https://github.com/duboisa7/jtfRms/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/duboisa7/jtfRms/actions/workflows/R-CMD-check.yaml)
+[![Codecov test coverage](https://codecov.io/gh/duboisa7/jtfRms/graph/badge.svg)](https://app.codecov.io/gh/duboisa7/jtfRms)
 <!-- badges: end -->
 
 jtfRms is a JotForm API wrapper, enabling a quick and simple method to pull JotForm data into R. 
