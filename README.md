@@ -2,19 +2,24 @@
 # jtfRms
 
 <!-- badges: start -->
+
+[![lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+[![R-CMD-check](https://github.com/duboisa7/jtfRms/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/duboisa7/jtfRms/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 jtfRms is a JotForm API wrapper, enabling a quick and simple method to pull JotForm data into R. 
 
-This package was initially created to address my need for pulling specific JotForm data into R but I plan to add additional functionality in future versions.
+This package was initially created to address my need for pulling specific JotForm data into tidy data frames but I plan to add additional functionality in future versions.
 
 ## Installation
 
 You can install the development version of jtfRms from [GitHub](https://github.com/) with:
 
 ``` r
-# install.packages("pak")
-pak::pak("duboisa7/jtfRms")
+
+# install.packages("devtools")
+devtools::install_github("duboisa7/jtfRms")
+
 ```
 
 ## Getting Started
@@ -35,7 +40,7 @@ get_key()
 
 ## Creating a request
 
-The JotForm API has three default base URLs: their standard base URL, one for EU users, and one for access HIPAA-compliant data. jtfRms doesn't currently have the functionality to connect to the JotForm API using Enterprise custom domain.com/API or subdomain.jotform.com/API URLs.
+The JotForm API has three default base URLs: their standard base URL, one for EU users, and one for access HIPAA-compliant data. jtfRms doesn't currently have the functionality to connect to the JotForm API using Enterprise custom URLs.
 
 Currently, jtfRms can create a few basic GET requests:
 
@@ -69,7 +74,7 @@ The body of the response created via create_request() contains the relevant JotF
 
 The [httr2 package](https://CRAN.R-project.org/package=httr2) offers great functions for extracting the response body into raw bytes, UTF-8 string, parsed JSON, parsed HTML, or parsed XML.
 
-Use jtfRms::parse_to_df() to create a super simple data frame of the response data.
+Use `jtfRms::parse_to_df()` to create a super simple data frame of the parsed response data.
 
 ```r
 
@@ -80,4 +85,5 @@ request <- create_request(url_type = "standard", form_id = "1234567",request_typ
 df <- parse_to_df(request = request,type = "submissions")
 
 ```
+
 
