@@ -1,0 +1,16 @@
+Package: jtfRms
+Title: Access your JotForm Data in R!
+Version: 0.0.0.9000
+Authors@R: 
+    person("Aubrey", "DuBois", , "aubreydubois1@icloud.com", role = c("aut", "cre"))
+Description: This package is a basic wrapper for the JotForms API. It allows you to easily retrieve form and form submission data from your JotForms account. I am not affiliated with JotForms.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
+Imports: 
+    httr2,
+    stats
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
