@@ -11,7 +11,7 @@
 
 jtfRms is a JotForm API wrapper, enabling a quick and simple method to pull JotForm data into R. 
 
-This package was initially created to address my need for pulling specific JotForm data into tidy data frames but I plan to add additional functionality in future versions.
+jtfRms was initially created to address my need for pulling specific JotForm data into tidy data frames but I plan to add additional functionality in future versions.
 
 ## Installation
 
@@ -81,11 +81,15 @@ Use `jtfRms::parse_to_df()` to create a super simple data frame of the parsed re
 ```r
 
 # Create a submission data request
-request <- create_request(url_type = "standard", form_id = "1234567",request_type = "form",limit = 100)
+request <- create_request(url_type = "standard", form_id = "1234567", request_type = "form", limit = 100)
 
 # Create a data frame of the form submission data
-df <- parse_to_df(request = request,type = "submissions")
+df <- parse_to_df(request = request, type = "submissions")
 
 ```
+
+## NOTES:
+
+This package is an unofficial API wrapper for JotForm and is not affiliated with, endorsed by, or maintained by JotForm. Users are responsible for complying with JotForm's terms of service and API usage policies. 
 
 
