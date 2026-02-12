@@ -4,15 +4,17 @@ Version: 0.0.0.9000
 Authors@R: 
     person("Aubrey", "DuBois", , "aubreydubois1@icloud.com", role = c("aut", "cre"))
 Description: This package is a basic wrapper for the JotForm API. It allows you to easily retrieve form and form submission data from your JotForm account. This package is an unofficial API wrapper for JotForm and is not affiliated with, endorsed by, or maintained by JotForm. Users are responsible for complying with JotForm's terms of service and API usage policies. 
-License: MIT + file LICENSE
+License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
 Imports: 
     httr2,
+    magrittr,
     stats
 Suggests: 
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    withr
 Config/testthat/edition: 3
 URL: https://github.com/duboisa7/jtfRms
 BugReports: https://github.com/duboisa7/jtfRms/issues

@@ -7,7 +7,7 @@
 #' @export
 set_key <- function(key){
   options("jf_api_key" = key)
-  message("API key set successfully")
+  message("API key set successfully.")
 }
 
 

@@ -2,7 +2,7 @@
 #'
 #' This function takes the JotForm HTTP response object, extracts the body as a parsed JSON, and returns a data frame of the specified JotForm data.
 #'
-#' @param request A HTTP response object created by [create_request()].
+#' @param request A HTTP response object created by [jtfRms::create_request()].
 #' @param type A string value: "form_list", "form", or "submissions". "form_list" returns a list of the user's forms. "form" returns properties of a specified form. "submissions" returns submission data of a specified form.
 #' @returns A data frame containing the data type specified in the "type" argument.
 #' @export
@@ -15,7 +15,7 @@ parse_to_df <- function(request, type){
     content <- json_req[["content"]]
 
     return(
-      do.call(rbind, lapply(content, rbind)) |>
+      do.call(rbind, lapply(content, rbind)) %>%
         as.data.frame()
       )
 
@@ -51,16 +51,18 @@ parse_to_df <- function(request, type){
         }
       return(NULL)
     })
-      do.call(rbind, valid_data) |>
+      do.call(rbind, valid_data) %>%
         stats::reshape(
           idvar = c("form_id", "submission_id", "created_at"),
           timevar = "question",
           direction = "wide"
         ) |>
-        (\(valid_data) {
+        (
+          function(valid_data) {
           names(valid_data) <- gsub("answer\\.", "", names(valid_data))
           valid_data
-        })()
+        }
+        )()
     }))
 
 

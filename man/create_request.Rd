@@ -12,7 +12,7 @@ create_request(
 )
 }
 \arguments{
-\item{url_type}{A string value: "standard", "EU", or "HIPAA". "standard" is the default value.}
+\item{url_type}{A string value: "standard", "EU", "HIPAA", or "custom". "standard" is the default value.}
 
 \item{form_id}{A string value. Default value is NULL. This is the series of digits that can be found at the end of the form URL. If form IDs are unknown, create a HTTP request of request_type = "form_list". This will return a list of forms and includes the form ID for each.}
 
