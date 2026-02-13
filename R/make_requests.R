@@ -12,7 +12,7 @@
 create_request <- function(url_type = "standard", form_id = NULL, request_type = "form_list", limit = NULL){
 
   if(is.null(getOption("jf_api_key"))) {
-    stop("API key not set. Use jtfRms::set_key() to store API key before making a request.", call. = FALSE)
+    stop("API key not set. Use set_key() to store API key before making a request.", call. = FALSE)
   }
 
   apikey <- getOption("jf_api_key")
