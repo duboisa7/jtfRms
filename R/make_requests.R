@@ -12,35 +12,32 @@
 create_request <- function(url_type = "standard", form_id = NULL, request_type = "form_list", limit = NULL){
 
   if(is.null(getOption("jf_api_key"))) {
-    stop("API key not set. Use jtfRms::set_key() to store API key before making a request.")
-  } else {
+    stop("API key not set. Use jtfRms::set_key() to store API key before making a request.", call. = FALSE)
+  }
 
   apikey <- getOption("jf_api_key")
   headers <- list(APIKEY = apikey)
 
-  base <- if(url_type == tolower("standard")){
+  base <- switch(
+    url_type,
+    standard = "https://api.jotform.com",
+    eu = "https://eu-api.jotform.com",
+    hipaa = "https://hipaa-api.jotform.com",
+    stop("URL type invalid. Options are 'standard', 'eu', or 'hipaa'.", call. = FALSE)
+  )
 
-    paste0("https://api.jotform.com")
+  # TODO Figure out how to handle custom bases. Would need to make a custom_base param or something
 
-  } else if(url_type == tolower("eu")){
-    paste0("https://eu-api.jotform.com")
-
-  } else if(url_type == tolower("hipaa")){
-    paste0("https://hipaa-api.jotform.com")
-
-  } else if(url_type == tolower("custom")){
-
-  } else {
-    stop("URL type invalid. Options are 'standard', 'eu', or 'hipaa'.")
-  }
-
-  endpt <- if(request_type == tolower("form_list")){
-
+  endpt <- if(request_type == "form_list"){
     paste0("/user/forms?")
 
-  } else if(request_type == tolower("form") && is.null(form_id)){
-    stop("form_id must be supplied for request_type 'form'. /n **HINT: Use jtfRms::create_request(request_type = 'form_list') first to see form IDs.**")
-  } else if(request_type == tolower("form") && !is.null(form_id)){
+    } else if(request_type == "form"){
+      if(is.null(form_id)) {
+        stop(
+          "form_id must be supplied for request_type 'form'.\n**HINT: Use create_request(request_type = 'form_list') first to see form IDs.**",
+          call. = FALSE
+          )
+        }
     paste0("/form/", form_id, "?")
 
     # TODO add question parsing to parse_content() before uncommenting
@@ -49,28 +46,33 @@ create_request <- function(url_type = "standard", form_id = NULL, request_type =
   # } else if(request_type == tolower("questions") && !is.null(form_id)){
   #   paste0("/form/", form_id, "/questions?")
 
-  } else if(request_type == tolower("submissions") && is.null(form_id)){
-    stop("form_id must be supplied for request_type 'submissions'.")
-  } else if(request_type == tolower("submissions") && !is.null(form_id)){
+  } else if(request_type == "submissions"){
+    if(is.null(form_id)) {
+      stop(
+        "form_id must be supplied for request_type 'form'.\n**HINT: Use create_request(request_type = 'form_list') first to see form IDs.**",
+        call. = FALSE
+      )
+    }
     paste0("/form/", form_id, "/submissions?")
 
   } else {
-    stop("Request type invalid. Options are 'form_list', 'form', 'submissions'. \n 'form' and 'submissions' require the form_id argument.")
+    stop(
+      "Request type invalid. Options are 'form_list', 'form', 'submissions'.\n'form' and 'submissions' require the form_id argument.",
+      call. = FALSE
+      )
   }
 
-  return_limit <- if(!is.null(limit) && is.numeric(limit) == FALSE){
-    stop("Limit must be a number between 1-1000.")
-  } else {
-    paste0("limit=", limit)
+if(!is.null(limit)) {
+  if (!is.numeric(limit) || length(limit) != 1 || is.na(limit) || limit < 1 || limit > 1000) {
+    stop("If indicating a limit, it must be a number between 1-1000.", call. = FALSE)
   }
+}
 
   url <- if(is.null(limit)){
     paste0(base, endpt)
   } else {
-    paste0(base, endpt, return_limit)
+    paste0(base, endpt, "limit=", limit)
   }
-
-}
 
 httr2::request(url) %>%
   httr2::req_headers(!!!headers) %>%

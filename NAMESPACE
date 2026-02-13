@@ -2,7 +2,7 @@
 
 export("%>%")
 export(create_request)
-export(get_key)
+export(key_exists)
 export(parse_to_df)
 export(set_key)
 importFrom(magrittr,"%>%")

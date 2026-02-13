@@ -56,7 +56,7 @@ parse_to_df <- function(request, type){
           idvar = c("form_id", "submission_id", "created_at"),
           timevar = "question",
           direction = "wide"
-        ) |>
+        ) %>%
         (
           function(valid_data) {
           names(valid_data) <- gsub("answer\\.", "", names(valid_data))
