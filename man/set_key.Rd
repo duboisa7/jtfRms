@@ -4,10 +4,7 @@
 \alias{set_key}
 \title{Set JotForm API Key}
 \usage{
-set_key(key)
-}
-\arguments{
-\item{key}{A string value of the JotForm API key.}
+set_key()
 }
 \description{
 This function stores the JotForm API Key in .Rprofile.

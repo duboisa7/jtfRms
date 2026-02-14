@@ -1,5 +1,5 @@
 
-# jtfRms
+# jtfRms <img src="man/figures/logo.png" align="right" height="128" alt="" />
 
 <!-- badges: start -->
 
@@ -8,6 +8,7 @@
 [![Codecov test coverage](https://codecov.io/gh/duboisa7/jtfRms/graph/badge.svg)](https://app.codecov.io/gh/duboisa7/jtfRms)
 
 <!-- badges: end -->
+
 
 jtfRms is a JotForm API wrapper, enabling a quick and simple method to pull JotForm data into R. 
 
@@ -72,9 +73,9 @@ request <- create_request(url_type = "standard", form_id = "1234567", request_ty
 
 ## Extracting data
 
-The body of the response created via create_request() contains the relevant JotForm data.
+The body of the response created via `jtfRms::create_request()` contains the relevant JotForm data.
 
-The [httr2 package](https://CRAN.R-project.org/package=httr2) offers great functions for extracting the response body into raw bytes, UTF-8 string, parsed JSON, parsed HTML, or parsed XML.
+`jtfRms` uses [httr2](https://CRAN.R-project.org/package=httr2) to extract the response body. `httr` offers great functions for extracting the response body into raw bytes, UTF-8 string, parsed JSON, parsed HTML, or parsed XML.
 
 Use `jtfRms::parse_to_df()` to create a super simple data frame of the parsed response data.
 

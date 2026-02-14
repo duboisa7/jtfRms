@@ -4,71 +4,85 @@
 #'
 #' @param request A HTTP response object created by [jtfRms::create_request()].
 #' @param type A string value: "form_list", "form", or "submissions". "form_list" returns a list of the user's forms. "form" returns properties of a specified form. "submissions" returns submission data of a specified form.
+#' @param pivot A string value used only for type = "submissions". Determines shape of final dataframe, options are "wide" or "long".
 #' @returns A data frame containing the data type specified in the "type" argument.
 #' @export
 
-parse_to_df <- function(request, type){
+parse_to_df <- function(request, type, pivot){
 
-  json_req <- httr2::resp_body_json(request)
+  json_resp <- httr2::resp_body_json(request)
+  content <- json_resp[["content"]]
 
   if(type == "form_list") {
-    content <- json_req[["content"]]
+    return((content))
 
-    return(
-      do.call(rbind, lapply(content, rbind)) %>%
-        as.data.frame()
-      )
+    } else if(type == "form"){
+      return(as.data.frame(content))
 
-  } else if(type == "form"){
+      } else if(type == "submissions"){
+        submission_data <- do.call(rbind, lapply(content, function(submission){
+          form_id <- submission$form_id
+          submission_id <- submission$id
+          created_at <- submission$created_at
+          answers <- submission$answers
 
-    return(
-     as.data.frame(json_req[["content"]])
-    )
+          if(is.null(answers) || !is.list(answers) ||length(answers) == 0) return(NULL)
 
-  } else if(type == "submissions"){
-    content <- json_req[["content"]]
+          rows <- lapply(answers, function(survey_obj){
+            if(!is.null(survey_obj$type) && survey_obj$type %in% c("heading", "control_head", "control_button")) return(NULL)
+            if(is.null(survey_obj$text) || length(survey_obj$text) == 0) return(NULL)
 
-    submission_data <- do.call(rbind, lapply(content, function(submission){
+            an_answer <- survey_obj$answer
+            an_answer_chr <- if(is.null(an_answer) || length(an_answer) == 0) {
+              NA_character_
 
-      form_id <- submission$form_id
-      submission_id <- submission$id
-      created_at <- submission$created_at
-      response_data <- submission$answers
+              } else if(is.list(an_answer)) {
+                paste(unlist(an_answer, use.names = FALSE), collapse = "; ")
+                } else {
+                  paste(as.character(an_answer), collapse = "; ")
+                  }
 
-      valid_data <- lapply(response_data, function(response){
-
-        if(all(c("text", "answer") %in% names(response))){
-
-          return(
-            data.frame(
+            return(data.frame(
               form_id = form_id,
               submission_id = submission_id,
               created_at = created_at,
-              question = response$text,
-              answer = response$answer
-              )
+              question = as.character(survey_obj$text)[1],
+              answer = an_answer_chr,
+              stringsAsFactors = FALSE
+              ))
+            })
+
+          rows <- Filter(Negate(is.null), rows)
+          if(length(rows) == 0) return(NULL)
+
+          return(do.call(rbind, rows))
+          }))
+
+        if(is.null(submission_data) || nrow(submission_data) == 0) {
+          submission_data <- data.frame(
+            form_id = character(),
+            submission_id = character(),
+            created_at = character(),
+            stringsAsFactors = FALSE
             )
+          } else {
+
+            if(pivot == "wide"){
+              submission_data <- stats::reshape(
+                submission_data,
+                idvar = c("form_id", "submission_id", "created_at"),
+                timevar = "question",
+                direction = "wide"
+                )
+              names(submission_data) <- sub("^answer\\.", "", names(submission_data))
+
+              return(submission_data)
+              } else {
+
+                return(submission_data)
+              }
+            }
+        } else {
+          stop("'type' argument is invalid. Options are 'form_list', 'form', or 'submissions.'")
         }
-      return(NULL)
-    })
-      do.call(rbind, valid_data) %>%
-        stats::reshape(
-          idvar = c("form_id", "submission_id", "created_at"),
-          timevar = "question",
-          direction = "wide"
-        ) %>%
-        (
-          function(valid_data) {
-          names(valid_data) <- gsub("answer\\.", "", names(valid_data))
-          valid_data
-        }
-        )()
-    }))
-
-
-  } else {
-
-    stop("'type' argument is invalid. Options are 'form_list', 'form', or 'submissions.'")
   }
-
-}

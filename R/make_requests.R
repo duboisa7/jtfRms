@@ -74,9 +74,16 @@ if(!is.null(limit)) {
     paste0(base, endpt, "limit=", limit)
   }
 
-httr2::request(url) %>%
-  httr2::req_headers(!!!headers) %>%
-  httr2::req_perform()
+  return(
+    data.frame(
+      url = url,
+      headers = headers
+    )
+  )
+
+# httr2::request(url) %>%
+#   httr2::req_headers(!!!headers) %>%
+#   httr2::req_perform()
 
 }
 
