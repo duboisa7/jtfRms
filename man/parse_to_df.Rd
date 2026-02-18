@@ -4,10 +4,10 @@
 \alias{parse_to_df}
 \title{Parse response and return as data frame}
 \usage{
-parse_to_df(request, type, pivot)
+parse_to_df(response, type, pivot)
 }
 \arguments{
-\item{request}{A HTTP response object created by \code{\link[=create_request]{create_request()}}.}
+\item{response}{A HTTP response object created by \code{\link[=get_response]{get_response()}}.}
 
 \item{type}{A string value: "form_list", "form", or "submissions". "form_list" returns a list of the user's forms. "form" returns properties of a specified form. "submissions" returns submission data of a specified form.}
 

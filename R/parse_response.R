@@ -2,16 +2,15 @@
 #'
 #' This function takes the JotForm HTTP response object, extracts the body as a parsed JSON, and returns a data frame of the specified JotForm data.
 #'
-#' @param request A HTTP response object created by [jtfRms::create_request()].
+#' @param response A HTTP response object created by [jtfRms::get_response()].
 #' @param type A string value: "form_list", "form", or "submissions". "form_list" returns a list of the user's forms. "form" returns properties of a specified form. "submissions" returns submission data of a specified form.
 #' @param pivot A string value used only for type = "submissions". Determines shape of final dataframe, options are "wide" or "long".
 #' @returns A data frame containing the data type specified in the "type" argument.
 #' @export
 
-parse_to_df <- function(request, type, pivot){
+parse_to_df <- function(response, type, pivot){
 
-  json_resp <- httr2::resp_body_json(request)
-  content <- json_resp[["content"]]
+  content <- response[["content"]]
 
   if(type == "form_list") {
     return((content))

@@ -25,8 +25,6 @@ key_exists <- function(){
   if (is.null(getOption("jf_api_key"))) {
     stop("API key not set. Use set_key() to store API key before making a request.")
   } else{
-  message("An existing JotForm API key is stored in .Rprofile.")
+    message("An existing JotForm API key is stored in .Rprofile.")
   }
 }
-
-
