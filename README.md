@@ -41,11 +41,11 @@ key_exists()
 
 ```
 
-## Creating a request
+## Performing a GET Request to Pull in Your JotForm Data
 
 The JotForm API has three default base URLs: their standard base URL, one for EU users, and one for access HIPAA-compliant data. jtfRms doesn't currently have the functionality to connect to the JotForm API using Enterprise custom URLs.
 
-Currently, jtfRms can create a few basic GET requests:
+Currently, jtfRms can perform a few basic GET requests:
 
 1. Request a list of forms created by the user
 2. Request form properties of a specific form
@@ -75,7 +75,7 @@ response <- get_response(url_type = "standard", form_id = "1234567", request_typ
 
 The body of the response created via `jtfRms::get_response()` contains the relevant JotForm data.
 
-`jtfRms` uses [httr2](https://CRAN.R-project.org/package=httr2) to extract the response body. `httr` offers great functions for extracting the response body into raw bytes, UTF-8 string, parsed JSON, parsed HTML, or parsed XML.
+`jtfRms` uses [httr2](https://CRAN.R-project.org/package=httr2) to extract the response body.
 
 Use `jtfRms::parse_to_df()` to create a super simple data frame of the parsed response data.
 
