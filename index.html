@@ -94,10 +94,10 @@
 <span><span class="fu"><a href="reference/key_exists.html">key_exists</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="creating-a-request">Creating a request<a class="anchor" aria-label="anchor" href="#creating-a-request"></a>
+<h2 id="performing-a-get-request-to-pull-in-your-jotform-data">Performing a GET Request to Pull in Your JotForm Data<a class="anchor" aria-label="anchor" href="#performing-a-get-request-to-pull-in-your-jotform-data"></a>
 </h2>
 <p>The JotForm API has three default base URLs: their standard base URL, one for EU users, and one for access HIPAA-compliant data. jtfRms doesn’t currently have the functionality to connect to the JotForm API using Enterprise custom URLs.</p>
-<p>Currently, jtfRms can create a few basic GET requests:</p>
+<p>Currently, jtfRms can perform a few basic GET requests:</p>
 <ol style="list-style-type: decimal">
 <li>Request a list of forms created by the user</li>
 <li>Request form properties of a specific form</li>
@@ -109,27 +109,27 @@
 <span><span class="co"># Request forms created by user. </span></span>
 <span><span class="co"># JotForm's default limit returns up to 20 forms; adjust this using the `limit` argument.</span></span>
 <span></span>
-<span><span class="va">response</span> <span class="op">&lt;-</span> <span class="fu">get_response</span><span class="op">(</span>url_type <span class="op">=</span> <span class="st">"standard"</span>, request_type <span class="op">=</span> <span class="st">"form_list"</span>, limit <span class="op">=</span> <span class="fl">50</span><span class="op">)</span></span>
+<span><span class="va">response</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_response.html">get_response</a></span><span class="op">(</span>url_type <span class="op">=</span> <span class="st">"standard"</span>, request_type <span class="op">=</span> <span class="st">"form_list"</span>, limit <span class="op">=</span> <span class="fl">50</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Request form property data on a single form</span></span>
 <span><span class="co"># The form ID is required for this type of request. The form ID is the string of numbers at the end of the form URL. They can also be found by performing a request using request_type = "form_list" and parsing the response.</span></span>
-<span><span class="va">response</span> <span class="op">&lt;-</span> <span class="fu">get_response</span><span class="op">(</span>url_type <span class="op">=</span> <span class="st">"standard"</span>, form_id <span class="op">=</span> <span class="st">"1234567"</span>, request_type <span class="op">=</span> <span class="st">"form"</span><span class="op">)</span></span>
+<span><span class="va">response</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_response.html">get_response</a></span><span class="op">(</span>url_type <span class="op">=</span> <span class="st">"standard"</span>, form_id <span class="op">=</span> <span class="st">"1234567"</span>, request_type <span class="op">=</span> <span class="st">"form"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Request submission data from a form</span></span>
 <span><span class="co"># The form ID is required for this type of request. The form ID is the string of numbers at the end of the form URL. They can also be found by performing the request using request_type = "form_list" and parsing the response.</span></span>
 <span><span class="co"># JotForm defaults to returning data on 20 submissions; this can be adjusted using the `limit` argument.</span></span>
-<span><span class="va">response</span> <span class="op">&lt;-</span> <span class="fu">get_response</span><span class="op">(</span>url_type <span class="op">=</span> <span class="st">"standard"</span>, form_id <span class="op">=</span> <span class="st">"1234567"</span>, request_type <span class="op">=</span> <span class="st">"form"</span>, limit <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">response</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_response.html">get_response</a></span><span class="op">(</span>url_type <span class="op">=</span> <span class="st">"standard"</span>, form_id <span class="op">=</span> <span class="st">"1234567"</span>, request_type <span class="op">=</span> <span class="st">"form"</span>, limit <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="parse-the-response-object">Parse the response object<a class="anchor" aria-label="anchor" href="#parse-the-response-object"></a>
 </h2>
-<p>The body of the response created via <code>jtfRms::get_response()</code> contains the relevant JotForm data.</p>
-<p><code>jtfRms</code> uses <a href="https://CRAN.R-project.org/package=httr2" class="external-link">httr2</a> to extract the response body. <code>httr</code> offers great functions for extracting the response body into raw bytes, UTF-8 string, parsed JSON, parsed HTML, or parsed XML.</p>
+<p>The body of the response created via <code><a href="reference/get_response.html">jtfRms::get_response()</a></code> contains the relevant JotForm data.</p>
+<p><code>jtfRms</code> uses <a href="https://CRAN.R-project.org/package=httr2" class="external-link">httr2</a> to extract the response body.</p>
 <p>Use <code><a href="reference/parse_to_df.html">jtfRms::parse_to_df()</a></code> to create a super simple data frame of the parsed response data.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># Create a submission data request</span></span>
-<span><span class="va">response</span> <span class="op">&lt;-</span> <span class="fu">get_response</span><span class="op">(</span>url_type <span class="op">=</span> <span class="st">"standard"</span>, form_id <span class="op">=</span> <span class="st">"1234567"</span>, request_type <span class="op">=</span> <span class="st">"form"</span>, limit <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span>
+<span><span class="va">response</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_response.html">get_response</a></span><span class="op">(</span>url_type <span class="op">=</span> <span class="st">"standard"</span>, form_id <span class="op">=</span> <span class="st">"1234567"</span>, request_type <span class="op">=</span> <span class="st">"form"</span>, limit <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Create a data frame of the form submission data</span></span>
 <span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/parse_to_df.html">parse_to_df</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">response</span>, type <span class="op">=</span> <span class="st">"submissions"</span><span class="op">)</span></span></code></pre></div>
